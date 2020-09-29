@@ -326,17 +326,6 @@
                             "opacity": 1,
                         }
                     });
-                    // Cycle lanes supposedy built for post-pandemic
-                    var projetLayer = new L.GeoJSON.AJAX(
-                    "https://raw.githubusercontent.com/velo-iledefrance/pistes-deconfinement/gh-pages/carte_de_travail_pistes_temporaires.geojson",
-                    {
-                        onEachFeature: bindFeatureEvents,
-                        style: {
-                            "color": colors[PROJET],
-                            "weight": weightFeature,
-                            "opacity": 1,
-                        }
-                    });
                     // Cycles lanes that have effectively been built post pandemic
                     var provisoireLayer = new L.GeoJSON.AJAX(
                         "https://raw.githubusercontent.com/velo-iledefrance/pistes-deconfinement/gh-pages/pistes_provisoires.geojson",
@@ -376,7 +365,7 @@
 
                     map = new L.Map('map', {
                         zoomControl: true,
-                        layers: [pianoFR, existantLayer, projetLayer, provisoireLayer, supprimeesLayer, renonceesLayer],
+                        layers: [pianoFR, existantLayer, provisoireLayer, supprimeesLayer, renonceesLayer],
                         scrollWheelZoom: queryDict['noZoom'] ? false : true,
                         minZoom: 9
                     }).on('layeradd', function(event){
@@ -421,7 +410,6 @@
                         items: [
                             { color: '#E75221', label: 'Itinéraires cyclables existants' },
                             { color: '#F49F17', label: 'Pistes cyclables temporaires' },
-                            { color: '#555555', label: 'Pistes temporaires en projet' },
                             { color: '#387ab1', color2: '#65e5e4', label: 'Autres aménagements cyclables' },
                         ],
                         collapsed: false,
@@ -437,7 +425,6 @@
                     };
                     var overlayMaps = {
                         "Principaux axes cyclables": existantLayer,
-                        "Pistes cyclables temporaires en projet": projetLayer,
                         "Pistes cyclables temporaires": provisoireLayer,
                         "Pistes cyclables temporaires supprimées": supprimeesLayer,
                         "Pistes cyclables temporaires renoncées": renonceesLayer
