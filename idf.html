@@ -49,6 +49,7 @@
                 min-height: 100%;
                 position: relative;
                 font-family: Roboto, sans-serif;
+                color:#333333;
             }
 
             body {
@@ -81,6 +82,11 @@
                 text-align: center;
             }
 
+            .statNumber {
+                font-size: 2em;
+                font-weight: bolder;
+            }
+
             #mainTitle {
                 margin-top: 0;
             }
@@ -103,13 +109,13 @@
             .leaflet-legend-color2left {
                 display: inline-block;
                 width: 10px;
-                heigth: 20px;
+                height: 20px;
                 margin-right: 0px;
             }
             .leaflet-legend-color2right {
                 display: inline-block;
                 width: 10px;
-                heigth: 20px;
+                height: 20px;
                 margin-left: 0px;
                 margin-right: 4px;
             }
@@ -224,7 +230,6 @@
                 document.getElementById("stats").innerHTML = text ;
             }
             // Compute the length of the different segments in a layer and bind events (highlight) to the segments
-
             function bindFeatureEvents(feature, layer)
             {
                 var colorFeature = (layer.options.style.color != null ? layer.options.style.color : "");
