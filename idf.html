@@ -161,37 +161,7 @@
             var lengthsFeatures = [[0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0]];
             var departementsBoundaries = [];
             var world_mask =
-                {
-                    "type": "Feature",
-                    "geometry": {
-                        "type": "Polygon",
-                        "coordinates": [
-                            [
-                                [
-                                -180.0,
-                                90.0
-                                ],
-                                [
-                                -180,
-                                -90
-                                ],
-                                [
-                                180,
-                                -90
-                                ],
-                                [
-                                180,
-                                90
-                                ],
-                                [
-                                -180.0,
-                                90.0
-                                ]
-                            ]
-                        ]
-                    },
-                    "properties": { }
-                };
+                {"type": "Feature","geometry": {"type": "Polygon","coordinates": [[[-180.0,90.0],[-180,-90],[180,-90],[180,90],[-180.0,90.0]]]},"properties": { }};
 
             function roundNumber(number, number_digits){
                 return (Math.round(number * Math.pow(10, number_digits)) / Math.pow(10, number_digits));
