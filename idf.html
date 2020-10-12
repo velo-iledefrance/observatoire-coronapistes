@@ -161,6 +161,7 @@
                 "Pistes cyclables temporaires pérennisées"];
             var departements = {75: 0, 77:1, 78:2, 91:3, 92:4, 93:5, 94: 6, 95: 7};
             var departements_mask = {} ;
+            var layer_mask ;
             var stats = new Array(colors.length);
             // First dimension : color (type of lane), second dimension : departement
             var lengthsFeatures = [[0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0]];
@@ -176,7 +177,16 @@
                 var selectElement = document.getElementById("selectDepartement") ;
                 var departement_number = Number(selectElement[selectElement.selectedIndex].value) ;
                 computeStats(departement_number);
-                var polygon = L.polygon( departements_mask[departement_number].geometry.coordinates).addTo(map);
+                if ( typeof layer_mask != "undefined"){
+                    layer_mask.remove();
+                    delete layer_mask;
+                }
+                if ( departement_number != 0){
+                    layer_mask = new L.GeoJSON( departements_mask[departement_number], {style: {color: '#555555', stroke:true, weight:1}}).addTo(map);
+                    layer_mask.on('click', function(){
+                        layer_mask.remove();
+                    });
+                }
             }
 
             function computeStats(departement){
