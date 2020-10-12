@@ -153,12 +153,17 @@
             var weightFeatureHighlighted = 6 ;
             var weightFeature = 3 ;
             var EXISTANT = 0, PROVISOIRE = 1, SUPPRIMEES = 2, PERENNISEES = 3 ;
-            var colors = ["#0000FF", "#555555", "#00FF00", "#FF0000", "#F49F17"] ;
+            var colors = ["#2D53A6", "#A8F518", "#DB2400", "#7EC200"] ;
+            var titles = [
+                "Itinéraires cyclables existants",
+                "Pistes cyclables temporaires",
+                "Pistes cyclables temporaires supprimées",
+                "Pistes cyclables temporaires pérennisées"];
             var departements = {75: 0, 77:1, 78:2, 91:3, 92:4, 93:5, 94: 6, 95: 7};
             var departements_mask = {} ;
             var stats = new Array(colors.length);
             // First dimension : color (type of lane), second dimension : departement
-            var lengthsFeatures = [[0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0]];
+            var lengthsFeatures = [[0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0]];
             var departementsBoundaries = [];
             var world_mask =
                 {"type": "Feature","geometry": {"type": "Polygon","coordinates": [[[-180.0,90.0],[-180,-90],[180,-90],[180,90],[-180.0,90.0]]]},"properties": { }};
@@ -192,10 +197,10 @@
                     }
                 }
 
-                var text = "Existant " + roundNumber(stats[EXISTANT], 2) + "km<br/>" ;
-                text += "Provisoire " + roundNumber(stats[PROVISOIRE], 2) + "km<br/>" ;
-                text += "Supprimées " + roundNumber(stats[SUPPRIMEES], 2) + "km<br/>" ;
-                text += "Renoncées " + roundNumber(stats[RENONCEES], 2) + "km<br/>" ;
+                var text = titles[EXISTANT] + "<br/><span class=\"statNumber\">" + roundNumber(stats[EXISTANT], 2) + "km</span><br/>" ;
+                text += titles[PROVISOIRE] + "<br/><span class=\"statNumber\">" + roundNumber(stats[PROVISOIRE], 2) + "km</span><br/>" ;
+                text += titles[SUPPRIMEES] + "<br/><span class=\"statNumber\">" + roundNumber(stats[SUPPRIMEES], 2) + "km</span><br/>" ;
+                text += titles[PERENNISEES] + "<br/><span class=\"statNumber\">" + roundNumber(stats[PERENNISEES], 2) + "km</span><br/>" ;
                 document.getElementById("stats").innerHTML = text ;
             }
 
@@ -312,9 +317,10 @@
                     // Legend
                     L.control.legend({
                         items: [
-                            { color: '#E75221', label: 'Itinéraires cyclables existants' },
-                            { color: '#F49F17', label: 'Pistes cyclables temporaires' },
-                            { color: '#387ab1', color2: '#65e5e4', label: 'Autres aménagements cyclables' },
+                            { color: colors[EXISTANT], label: titles[EXISTANT] },
+                            { color: colors[PROVISOIRE], label: titles[PROVISOIRE] },
+                            { color: colors[SUPPRIMEES], label: titles[SUPPRIMEES] },
+                            { color: colors[PERENNISEES], label: titles[PERENNISEES] },
                         ],
                         collapsed: false,
                         buttonHtml: 'Légende'
@@ -368,7 +374,7 @@
 
                     // Set up layers control
                     var overlayMaps = {
-                        "Principaux axes cyclables": existantLayer,
+                        "Itinéraires cyclables existants": existantLayer,
                         "Pistes cyclables temporaires": provisoireLayer,
                         "Pistes cyclables temporaires supprimées": supprimeesLayer,
                         "Pistes cyclables temporaires pérennisées": perenniseesLayer
