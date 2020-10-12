@@ -152,7 +152,7 @@
             var timeout = null;
             var weightFeatureHighlighted = 6 ;
             var weightFeature = 3 ;
-            var EXISTANT = 0, PROJET = 1, PROVISOIRE = 2, SUPPRIMEES = 3, RENONCEES = 4 ;
+            var EXISTANT = 0, PROVISOIRE = 1, SUPPRIMEES = 2, PERENNISEES = 3 ;
             var colors = ["#0000FF", "#555555", "#00FF00", "#FF0000", "#F49F17"] ;
             var departements = {75: 0, 77:1, 78:2, 91:3, 92:4, 93:5, 94: 6, 95: 7};
             var departements_mask = {} ;
@@ -260,51 +260,6 @@
                         departements_mask[departement_number] = turf.difference(world_mask, layer.feature);
                     });
 
-                    // Already existing cycle lanes
-                    var existantLayer = new L.GeoJSON.AJAX(
-                    "https://raw.githubusercontent.com/velo-iledefrance/pistes-deconfinement/gh-pages/existant.geojson",
-                    {
-                        onEachFeature: bindFeatureEvents,
-                        style: {
-                            "color": colors[EXISTANT],
-                            "weight": weightFeature,
-                            "opacity": 0.7,
-                        }
-                    });
-                    // Cycles lanes that have effectively been built post pandemic
-                    var provisoireLayer = new L.GeoJSON.AJAX(
-                        "https://raw.githubusercontent.com/velo-iledefrance/pistes-deconfinement/gh-pages/pistes_provisoires.geojson",
-                    {
-                        onEachFeature: bindFeatureEvents,
-                        style: {
-                            "color": colors[PROVISOIRE],
-                            "weight": weightFeature,
-                            "opacity": 1,
-                        }
-                    });
-                    // Cycles lanes that have effectively been built then deleted post pandemic
-                    var supprimeesLayer = new L.GeoJSON.AJAX(
-                        "https://raw.githubusercontent.com/velo-iledefrance/pistes-deconfinement/gh-pages/pistes_supprimees.geojson",
-                    {
-                        onEachFeature: bindFeatureEvents,
-                        style: {
-                            "color": colors[SUPPRIMEES],
-                            "weight": weightFeature,
-                            "opacity": 1,
-                        }
-                    });
-                    // Cycles lanes that haven't been built post pandemic while planned
-                    var renonceesLayer = new L.GeoJSON.AJAX(
-                        "https://raw.githubusercontent.com/velo-iledefrance/pistes-deconfinement/gh-pages/projets_renonces.geojson",
-                    {
-                        onEachFeature: bindFeatureEvents,
-                        style: {
-                            "color": colors[RENONCEES],
-                            "weight": weightFeature,
-                            "opacity": 1,
-                        }
-                    });
-
                     var queryDict = {}
                     location.search.substr(1).split("&").forEach(function(item) {queryDict[item.split("=")[0]] = item.split("=")[1]})
 
@@ -365,12 +320,58 @@
                         buttonHtml: 'Légende'
                     }).addTo(map);
 
+                    // Set up layers
+                    // Already existing cycle lanes
+                    var existantLayer = new L.GeoJSON.AJAX(
+                    "https://raw.githubusercontent.com/velo-iledefrance/pistes-deconfinement/gh-pages/existant.geojson",
+                    {
+                        onEachFeature: bindFeatureEvents,
+                        style: {
+                            "color": colors[EXISTANT],
+                            "weight": weightFeature,
+                            "opacity": 1.0,
+                        }
+                    }).addTo(map).on({add: function(){existantLayer.bringToBack();}});
+                    // Cycles lanes that have effectively been built post pandemic
+                    var provisoireLayer = new L.GeoJSON.AJAX(
+                        "https://raw.githubusercontent.com/velo-iledefrance/pistes-deconfinement/gh-pages/pistes_provisoires.geojson",
+                    {
+                        onEachFeature: bindFeatureEvents,
+                        style: {
+                            "color": colors[PROVISOIRE],
+                            "weight": weightFeature,
+                            "opacity": 1,
+                        }
+                    }).addTo(map).on({add: function(){provisoireLayer.bringToBack();}});;
+                    // Cycles lanes that have effectively been built then deleted post pandemic
+                    var supprimeesLayer = new L.GeoJSON.AJAX(
+                        "https://raw.githubusercontent.com/velo-iledefrance/pistes-deconfinement/gh-pages/pistes_supprimees.geojson",
+                    {
+                        onEachFeature: bindFeatureEvents,
+                        style: {
+                            "color": colors[SUPPRIMEES],
+                            "weight": weightFeature,
+                            "opacity": 1,
+                        }
+                    }).addTo(map).on({add: function(){supprimeesLayer.bringToFront();}});
+                    // Cycles lanes that haven't been built post pandemic while planned
+                    var perenniseesLayer = new L.GeoJSON.AJAX(
+                        "https://raw.githubusercontent.com/velo-iledefrance/pistes-deconfinement/gh-pages/pistes_perennisees.geojson",
+                    {
+                        onEachFeature: bindFeatureEvents,
+                        style: {
+                            "color": colors[PERENNISEES],
+                            "weight": weightFeature,
+                            "opacity": 1,
+                        }
+                    }).addTo(map).on({add: function(){perenniseesLayer.bringToFront();}});
+
                     // Set up layers control
                     var overlayMaps = {
                         "Principaux axes cyclables": existantLayer,
                         "Pistes cyclables temporaires": provisoireLayer,
                         "Pistes cyclables temporaires supprimées": supprimeesLayer,
-                        "Pistes cyclables temporaires renoncées": renonceesLayer
+                        "Pistes cyclables temporaires pérennisées": perenniseesLayer
                     };
                     L.control.layers(null, overlayMaps, { collapsed: false }).addTo(map);
 
