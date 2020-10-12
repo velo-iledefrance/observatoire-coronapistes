@@ -31,6 +31,7 @@
         <link rel="stylesheet" href="css/L.Control.Locate.min.css">
         <link rel="stylesheet" href="css/fa-all.min.css">
         <link rel="stylesheet" href="css/leaflet-legend.css">
+        <link rel='stylesheet' href='css/leaflet.fullscreen.css'/>
         <style type="text/css">
             @font-face {
                 font-family: 'Roboto';
@@ -155,6 +156,7 @@
         <script src="js/leaflet.js"></script>
         <script src="js/leaflet.ajax.min.js"></script>
         <script src="js/leaflet-fullHash.js"></script>
+        <script src="js/Leaflet.fullscreen.min.js"></script>
         <script src="js/Control.Geocoder.js"></script>
         <script src="js/easy-button.js"></script>
         <script src="js/L.Control.Locate.js"></script>
@@ -302,6 +304,7 @@
 
                     // Create the map, add base layer and correct attribution for the map
                     map = new L.Map('map', {
+                        fullscreenControl: true,
                         zoomControl: true,
                         scrollWheelZoom: queryDict['noZoom'] ? false : true,
                         minZoom: 9
