@@ -4,7 +4,7 @@ module.exports = {
    pointsWithinPolygon: require('@turf/points-within-polygon'),
    explode: require('@turf/explode'),
    difference: require('@turf/difference'),
-   polygon: require('@turf/helpers')
+   helpers: require('@turf/helpers')
 };
 },{"@turf/difference":5,"@turf/explode":12,"@turf/helpers":14,"@turf/line-distance":16,"@turf/points-within-polygon":20}],2:[function(require,module,exports){
 'use strict';

@@ -239,6 +239,11 @@
                         for ( var i_departement = 0 ; i_departement < departementsBoundaries.length ; i_departement++){
                             var points_inside = turf.pointsWithinPolygon(turf.explode(feature), departementsBoundaries[i_departement].geometry);
                             if ( points_inside.features.length > 0){
+                                var points_coordinates = []
+                                for ( var i_point = 0 ; i_point < points_inside.features.length ; i_point++){
+                                    points_coordinates.push(points_inside.features[i_point].geometry.coordinates);
+                                }
+
                                 lengthsFeatures[index][ departements[departementsBoundaries[i_departement]. departement] ] += turf.lineDistance(feature) ;
                             }
                         }
