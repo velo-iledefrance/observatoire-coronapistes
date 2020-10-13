@@ -298,10 +298,10 @@
                     }
                 }
 
-                document.getElementById("statExistant").innerHTML = roundNumber(stats[EXISTANT], 2) + "km" ;
-                document.getElementById("statProvisoire").innerHTML = roundNumber(stats[PROVISOIRE], 2) + "km" ;
-                document.getElementById("statSupprimees").innerHTML = roundNumber(stats[SUPPRIMEES], 2) + "km" ;
-                document.getElementById("statPerennisees").innerHTML = roundNumber(stats[PERENNISEES], 2) + "km" ;
+                document.getElementById("statExistant").innerHTML = roundNumber(stats[EXISTANT], 2) + "&nbsp;km" ;
+                document.getElementById("statProvisoire").innerHTML = roundNumber(stats[PROVISOIRE], 2) + "&nbsp;km" ;
+                document.getElementById("statSupprimees").innerHTML = roundNumber(stats[SUPPRIMEES], 2) + "&nbsp;km" ;
+                document.getElementById("statPerennisees").innerHTML = roundNumber(stats[PERENNISEES], 2) + "&nbsp;km" ;
             }
             // Compute the length of the different segments in a layer and bind events (highlight) to the segments
             function bindFeatureEvents(feature, layer)
