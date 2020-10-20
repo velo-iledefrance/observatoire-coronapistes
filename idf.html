@@ -166,10 +166,9 @@
 
                 div#panel {
                     width:100%;
-                    min-height: 30vh;
-                    border-top-width: 2vh;
-                    border-top-color:rgba(0,140,173,1);
-                    border-top-style: solid;
+                    height: 30vh;
+                    border-top-width: 0vh;
+                    display:flex;
                 }
 
                 div#panelTitle h1 {
@@ -181,10 +180,19 @@
                     color: rgba(0,140,173,1);
                 }
 
+                div#panelContainer {
+                    display:flex;
+                    flex-direction: column;
+                    border-top-width: 2vh;
+                    border-top-color: rgba(0,140,173,1);
+                    border-top-style: solid;
+                }
+
                 div#panelContent {
                     height:18vh;
                     flex-flow: row wrap;
-                    background-color: rgba(245,245,245,1);
+                    background-color: #f5f5f5;
+                    flex:1;
                 }
 
                 div#panelContent select {
