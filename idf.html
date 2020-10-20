@@ -535,10 +535,10 @@
 
                     // Set up layers control
                     var overlayMaps = {
-                        '<svg width="20" height="20" class="checkbox_image" id="checkbox_existant"></text><rect width="20" height="20" style="fill:#8f8f8f;stroke-width:0;" /><text x="5" y="15" fill="black">✔</svg> Itinéraires cyclables existants': existantLayer,
-                        '<svg width="20" height="20" class="checkbox_image" id="checkbox_provisoire"></text><rect width="20" height="20" style="fill:#2fd231;stroke-width:0;" /><text x="5" y="15" fill="black">✔</svg> Pistes cyclables temporaires': provisoireLayer,
-                        '<svg width="20" height="20" class="checkbox_image" id="checkbox_supprimees"></text><rect width="20" height="20" style="fill:#f20a17;stroke-width:0;" /><text x="5" y="15" fill="black">✔</svg> Pistes cyclables temporaires supprimées': supprimeesLayer,
-                        '<svg width="20" height="20" class="checkbox_image" id="checkbox_perennisees"></text><rect width="20" height="20" style="fill:#006319;stroke-width:0;" /><text x="5" y="15" fill="black">✔</svg> Pistes cyclables temporaires pérennisées': perenniseesLayer
+                        '<svg width="20" height="20" class="checkbox_image" id="checkbox_existant"></text><rect width="20" height="20" style="fill:#8f8f8f;stroke-width:0;" /><text x="5" y="15" fill="#f5f5f5">✔</svg> Itinéraires cyclables existants': existantLayer,
+                        '<svg width="20" height="20" class="checkbox_image" id="checkbox_provisoire"></text><rect width="20" height="20" style="fill:#2fd231;stroke-width:0;" /><text x="5" y="15" fill="#f5f5f5">✔</svg> Pistes cyclables temporaires': provisoireLayer,
+                        '<svg width="20" height="20" class="checkbox_image" id="checkbox_supprimees"></text><rect width="20" height="20" style="fill:#f20a17;stroke-width:0;" /><text x="5" y="15" fill="#f5f5f5">✔</svg> Pistes cyclables temporaires supprimées': supprimeesLayer,
+                        '<svg width="20" height="20" class="checkbox_image" id="checkbox_perennisees"></text><rect width="20" height="20" style="fill:#006319;stroke-width:0;" /><text x="5" y="15" fill="#f5f5f5">✔</svg> Pistes cyclables temporaires pérennisées': perenniseesLayer
                     };
                     L.control.layers(null, overlayMaps, { collapsed: false }).addTo(map);
 
