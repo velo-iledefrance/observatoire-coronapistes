@@ -102,7 +102,7 @@
 
                 div#panel {
                     width:25%;
-                    height:100vh;
+                    height:94vh;
                     border-top-width: 6vh;
                     border-top-color:rgba(0,140,173,1);
                     border-top-style: solid;
@@ -110,14 +110,16 @@
 
                 div#panelContainer {
                     height:92vh;
+                    display:flex;
+                    flex-direction: column;
                 }
 
                 div#panelContent {
                     flex-direction: column;
                     background-color: rgba(245,245,245,1);
                     display: flex;
-                    justify-content: space-between;
-                    height:inherit;
+                    justify-content: space-around;
+                    flex:1;
                 }
 
                 div#panelTitle h1 {
