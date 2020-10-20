@@ -176,7 +176,6 @@
                     font-family: 'Elido';
                     font-style: normal;
                     font-weight: bold;
-                    font-size: 5vw;
                     color: rgba(0,140,173,1);
                 }
 
@@ -199,15 +198,20 @@
                     flex:1;
                 }
 
-
                 div.stat {
-                    font-size:2vw;
                     width:50%;
                     float:left;
                 }
 
-                .statNumber {
-                    font-size: 1.5em;
+                @media all and (max-aspect-ratio:1/1){
+                    div#panelTitle h1 { font-size: 3.5vw; }
+                    .statNumber { font-size: 3.75vw; }
+                    .stat { font-size: 3.0vw; }
+                }
+                @media all and (max-aspect-ratio:3/4){
+                    div#panelTitle h1 { font-size: 3.0vw; }
+                    .statNumber { font-size: 3.25vw; }
+                    .stat { font-size: 2.5vw; }
                 }
             }
 
