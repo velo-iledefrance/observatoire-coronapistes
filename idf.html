@@ -69,13 +69,10 @@
             }
 
             div#panelContent {
-                background-color: white;
                 padding: 1vh 1vw;
                 text-align: center;
                 overflow-y:scroll;
                 overflow-x: hidden;
-                display: flex;
-                justify-content: space-around;
             }
 
             .statNumber {
@@ -97,9 +94,16 @@
                     border-top-style: solid;
                 }
 
+                div#panelContainer {
+                    height:92vh;
+                }
+
                 div#panelContent {
-                    height:98vh;
                     flex-direction: column;
+                    background-color: rgba(245,245,245,1);
+                    display: flex;
+                    justify-content: space-between;
+                    height:inherit;
                 }
             }
 
@@ -120,11 +124,11 @@
                     flex-flow: row wrap;
                 }
 
-                div#panelTitleSelect {
+                div#panelTitle {
                     max-width:30%;
                 }
 
-                div#panelTitleSelect select {
+                div#panelTitle select {
                     max-width:90%;
                 }
 
@@ -194,9 +198,11 @@
         <div id="container">
             <div id="map"></div>
             <div id="panel">
-                <div id="panelContent">
-                    <div id="panelTitleSelect">
-                        <h1>Observatoire des pistes cyclables temporaires</h1>
+                <div id="panelContainer">
+                    <div id="panelTitle">
+                        <h1>Observatoire des coronapistes</h1>
+                    </div>
+                    <div id="panelContent">
                         <select id="selectDepartement">
                             <option value="0" selected>Île de France</option>
                             <option value="75">Paris (75)</option>
@@ -208,22 +214,22 @@
                             <option value="94">Val-de-Marne (94)</option>
                             <option value="95">Val-d'Oise (95)</option>
                         </select>
-                    </div>
-                    <div class="stat">
-                        Itinéraires cyclables existants<br/>
-                        <span class="statNumber" id="statExistant">&nbsp;</span>
-                    </div>
-                    <div class="stat">
-                        Pistes cyclables temporaires<br/>
-                        <span class="statNumber" id="statProvisoire">&nbsp;</span>
-                    </div>
-                    <div class="stat">
-                        Pistes cyclables temporaires supprimées<br/>
-                        <span class="statNumber" id="statSupprimees">&nbsp;</span>
-                    </div>
-                    <div class="stat">
-                        Pistes cyclables temporaires pérennisées<br/>
-                        <span class="statNumber" id="statPerennisees">&nbsp;</span>
+                        <div class="stat">
+                            Itinéraires cyclables existants<br/>
+                            <span class="statNumber" id="statExistant">&nbsp;</span>
+                        </div>
+                        <div class="stat">
+                            Pistes cyclables temporaires<br/>
+                            <span class="statNumber" id="statProvisoire">&nbsp;</span>
+                        </div>
+                        <div class="stat">
+                            Pistes cyclables temporaires supprimées<br/>
+                            <span class="statNumber" id="statSupprimees">&nbsp;</span>
+                        </div>
+                        <div class="stat">
+                            Pistes cyclables temporaires pérennisées<br/>
+                            <span class="statNumber" id="statPerennisees">&nbsp;</span>
+                        </div>
                     </div>
                 </div>
             </div>
