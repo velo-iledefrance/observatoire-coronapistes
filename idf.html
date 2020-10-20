@@ -133,30 +133,41 @@
             @media all and (orientation: portrait) {
                 div#map {
                     width:100%;
-                    height:80vh;
+                    height:70vh;
                 }
 
                 div#panel {
                     width:100%;
-                    height: 20vh;
+                    min-height: 30vh;
+                    border-top-width: 2vh;
+                    border-top-color:rgba(0,140,173,1);
+                    border-top-style: solid;
                 }
 
+                div#panelTitle h1 {
+                    text-align: center;
+                    font-family: 'Elido';
+                    font-style: normal;
+                    font-weight: bold;
+                    font-size: 5vw;
+                    color: rgba(0,140,173,1);
+                }
 
                 div#panelContent {
                     height:18vh;
                     flex-flow: row wrap;
+                    background-color: rgba(245,245,245,1);
                 }
 
-                div#panelTitle {
-                    max-width:30%;
-                }
-
-                div#panelTitle select {
-                    max-width:90%;
+                div#panelContent select {
+                    max-width:80%;
+                    min-width: 60%;
                 }
 
                 div.stat {
                     font-size:2vw;
+                    width:50%;
+                    float:left;
                 }
 
                 .statNumber {
