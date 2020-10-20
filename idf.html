@@ -130,6 +130,32 @@
                     font-size: 1.75vw;
                     color: rgba(0,140,173,1);
                 }
+
+                @media all and (min-aspect-ratio:1/1){
+                    div#panelTitle h1 { font-size: 2.0vw; }
+                    .statNumber { font-size: 2.25vw; }
+                    .stat { font-size: 1.5vw; }
+                }
+                @media all and (min-aspect-ratio:3/2){
+                    div#panelTitle h1 { font-size: 1.75vw; }
+                    .statNumber { font-size: 2vw; }
+                    .stat { font-size: 1.25vw; }
+                }
+                @media all and (min-aspect-ratio:2/1){
+                    div#panelTitle h1 { font-size: 1.5vw; }
+                    .statNumber { font-size: 1.75vw; }
+                    .stat { font-size: 1.0vw; }
+                }
+                @media all and (min-aspect-ratio:4/1){
+                    div#panelTitle h1 { font-size: 1.25vw; }
+                    .statNumber { font-size: 1.5vw; }
+                    .stat { font-size: 0.75vw; }
+                }
+                @media all and (min-aspect-ratio:5/1){
+                    div#panelTitle h1 { font-size: 1.vw; }
+                    .statNumber { font-size: 1.25vw; }
+                    .stat { font-size: 0.5vw; }
+                }
             }
 
             @media all and (orientation: portrait) {
@@ -174,19 +200,6 @@
 
                 .statNumber {
                     font-size: 1.5em;
-                }
-            }
-
-            @media all and (max-width: 600px)
-            {
-                div#panelContent {
-                    font-size:2vw;
-                }
-            }
-            @media all and (max-width: 1000px)
-            {
-                div#panelContent {
-                    font-size:1vw;
                 }
             }
 
