@@ -221,6 +221,21 @@
                 margin-right: 4px;
             }
 
+            /* Layer selector */
+            .leaflet-control-layers-selector {
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                -o-appearance: none;
+                appearance: none;
+                width: 0px;
+                margin:0px;
+            }
+
+            .checkbox_image {
+                vertical-align: middle;
+                margin-bottom:5px;
+            }
+
             @media screen and (max-width: 550px) {
                 .leaflet-control-watermark.leaflet-control {
                     margin-bottom: 20px;
@@ -301,6 +316,14 @@
             var departementsBoundaries = [];
             var world_mask =
                 {"type": "Feature","geometry": {"type": "Polygon","coordinates": [[[-180.0,90.0],[-180,-90],[180,-90],[180,90],[-180.0,90.0]]]},"properties": { }};
+
+            function toggleIcon(layer, event){
+                if ( event.type == "remove"){
+                    document.getElementById( "checkbox_" + layer).children[1].textContent = "" ;
+                } else {
+                    document.getElementById( "checkbox_" + layer).children[1].textContent = "✔" ;
+                }
+            }
 
             function roundFormatNumber(number, number_digits){
                 var number = "" + Math.round(number * Math.pow(10, number_digits)) / Math.pow(10, number_digits);
@@ -462,18 +485,6 @@
                     }
                     L.control.watermark({ position: 'bottomleft' }).addTo(map);
 
-                    // Legend
-                    L.control.legend({
-                        items: [
-                            { color: colors[EXISTANT], label: titles[EXISTANT] },
-                            { color: colors[PROVISOIRE], label: titles[PROVISOIRE] },
-                            { color: colors[SUPPRIMEES], label: titles[SUPPRIMEES] },
-                            { color: colors[PERENNISEES], label: titles[PERENNISEES] },
-                        ],
-                        collapsed: false,
-                        buttonHtml: 'Légende'
-                    }).addTo(map);
-
                     // Set up layers
                     // Already existing cycle lanes
                     var existantLayer = new L.GeoJSON.AJAX(
@@ -485,7 +496,7 @@
                             "weight": weightFeature,
                             "opacity": 1.0,
                         }
-                    }).addTo(map).on({add: function(){existantLayer.bringToBack();}});
+                    }).addTo(map).on({add: function(event){existantLayer.bringToBack();toggleIcon("existant", event);}, remove: function (event) {toggleIcon("existant", event) ; } });
                     // Cycles lanes that have effectively been built post pandemic
                     var provisoireLayer = new L.GeoJSON.AJAX(
                         "https://raw.githubusercontent.com/velo-iledefrance/pistes-deconfinement/gh-pages/pistes_provisoires.geojson",
@@ -496,7 +507,7 @@
                             "weight": weightFeature,
                             "opacity": 1,
                         }
-                    }).addTo(map).on({add: function(){provisoireLayer.bringToBack();}});;
+                    }).addTo(map).on({add: function(event){provisoireLayer.bringToBack();toggleIcon("provisoire", event);}, remove: function (event) {toggleIcon("provisoire", event) ; } });
                     // Cycles lanes that have effectively been built then deleted post pandemic
                     var supprimeesLayer = new L.GeoJSON.AJAX(
                         "https://raw.githubusercontent.com/velo-iledefrance/pistes-deconfinement/gh-pages/pistes_supprimees.geojson",
@@ -507,7 +518,7 @@
                             "weight": weightFeature,
                             "opacity": 1,
                         }
-                    }).addTo(map).on({add: function(){supprimeesLayer.bringToFront();}});
+                    }).addTo(map).on({add: function(event){supprimeesLayer.bringToFront();toggleIcon("supprimees", event);}, remove: function (event) {toggleIcon("supprimees", event) ; } });
                     // Cycles lanes that haven't been built post pandemic while planned
                     var perenniseesLayer = new L.GeoJSON.AJAX(
                         "https://raw.githubusercontent.com/velo-iledefrance/pistes-deconfinement/gh-pages/pistes_perennisees.geojson",
@@ -518,14 +529,14 @@
                             "weight": weightFeature,
                             "opacity": 1,
                         }
-                    }).addTo(map).on({add: function(){perenniseesLayer.bringToFront();}});
+                    }).addTo(map).on({add: function(event){perenniseesLayer.bringToFront();toggleIcon("perennisees", event);}, remove: function (event) {toggleIcon("perennisees", event) ; } });
 
                     // Set up layers control
                     var overlayMaps = {
-                        "Itinéraires cyclables existants": existantLayer,
-                        "Pistes cyclables temporaires": provisoireLayer,
-                        "Pistes cyclables temporaires supprimées": supprimeesLayer,
-                        "Pistes cyclables temporaires pérennisées": perenniseesLayer
+                        '<svg width="20" height="20" class="checkbox_image" id="checkbox_existant"></text><rect width="20" height="20" style="fill:#8f8f8f;stroke-width:0;" /><text x="5" y="15" fill="black">✔</svg> Itinéraires cyclables existants': existantLayer,
+                        '<svg width="20" height="20" class="checkbox_image" id="checkbox_provisoire"></text><rect width="20" height="20" style="fill:#2fd231;stroke-width:0;" /><text x="5" y="15" fill="black">✔</svg> Pistes cyclables temporaires': provisoireLayer,
+                        '<svg width="20" height="20" class="checkbox_image" id="checkbox_supprimees"></text><rect width="20" height="20" style="fill:#f20a17;stroke-width:0;" /><text x="5" y="15" fill="black">✔</svg> Pistes cyclables temporaires supprimées': supprimeesLayer,
+                        '<svg width="20" height="20" class="checkbox_image" id="checkbox_perennisees"></text><rect width="20" height="20" style="fill:#006319;stroke-width:0;" /><text x="5" y="15" fill="black">✔</svg> Pistes cyclables temporaires pérennisées': perenniseesLayer
                     };
                     L.control.layers(null, overlayMaps, { collapsed: false }).addTo(map);
 
