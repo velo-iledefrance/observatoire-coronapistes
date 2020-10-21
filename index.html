@@ -439,7 +439,8 @@
             function bindFeatureEvents(feature, layer){
                 if ( typeof feature.properties != "undefined" && feature.properties != null && typeof feature.properties.popup != "undefined" ){
                     var popupContent = converter.makeHtml(feature.properties.popup);
-                    layer.bindTooltip(popupContent, {"direction":"top", "className": "tooltip"});
+                    var tooltip = layer.bindTooltip(popupContent, {"direction":"top", "className": "tooltip"});
+                    tooltip.removeEventListener("mouseout");
                 }
 
                 var colorFeature = (layer.options.style.color != null ? layer.options.style.color : "");
