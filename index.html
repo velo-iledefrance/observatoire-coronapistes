@@ -447,6 +447,9 @@
                     tooltip.addEventListener("mouseout", launchTimeoutHideTooltip);
                     tooltip.addEventListener("mouseover", stopTimeoutHideTooltip);
                     tooltip.on("tooltipopen", function(event){
+                        if ( tooltipOpen != null && tooltipOpen != event.target){
+                            hideTooltipOpen();
+                        }
                         tooltipOpen = event.target ;
                         document.getElementsByClassName("tooltip")[0].addEventListener("mouseover", stopTimeoutHideTooltip);
                         document.getElementsByClassName("tooltip")[0].addEventListener("mouseout", launchTimeoutHideTooltip);
