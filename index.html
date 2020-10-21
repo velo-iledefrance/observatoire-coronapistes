@@ -338,7 +338,8 @@
         <script type="text/javascript">
             var converter = new showdown.Converter() ;
             var map;
-            var timeoutChangeStats = null;
+            var tooltipOpen = null ;
+            var timeoutChangeStats = null, timeoutHideTooltip = null;
             var weightFeatureHighlighted = 6 ;
             var weightFeature = 3 ;
             var EXISTANT = 0, PROVISOIRE = 1, SUPPRIMEES = 2, PERENNISEES = 3 ;
@@ -443,6 +444,13 @@
                     var popupContent = converter.makeHtml(feature.properties.popup);
                     var tooltip = layer.bindTooltip(popupContent, {"direction":"top", "className": "tooltip"});
                     tooltip.removeEventListener("mouseout");
+                    tooltip.addEventListener("mouseout", launchTimeoutHideTooltip);
+                    tooltip.addEventListener("mouseover", stopTimeoutHideTooltip);
+                    tooltip.on("tooltipopen", function(event){
+                        tooltipOpen = event.target ;
+                        document.getElementsByClassName("tooltip")[0].addEventListener("mouseover", stopTimeoutHideTooltip);
+                        document.getElementsByClassName("tooltip")[0].addEventListener("mouseout", launchTimeoutHideTooltip);
+                    });
                 }
 
                 var colorFeature = (layer.options.style.color != null ? layer.options.style.color : "");
@@ -467,6 +475,25 @@
                     clearTimeout(timeoutChangeStats) ;
                 }
                 timeoutChangeStats = setTimeout(changeStats, 2000) ;
+            }
+            function launchTimeoutHideTooltip(event){
+                if ( timeoutHideTooltip != null){
+                    clearTimeout(timeoutHideTooltip);
+                    timeoutHideTooltip = null ;
+                }
+                timeoutHideTooltip = setTimeout(hideTooltipOpen, 500);
+            }
+            function stopTimeoutHideTooltip(event){
+                if ( timeoutHideTooltip != null ){
+                    clearTimeout(timeoutHideTooltip) ;
+                    timeoutHideTooltip = null ;
+                }
+            }
+            function hideTooltipOpen(event){
+                if ( tooltipOpen != null ){
+                    tooltipOpen.closeTooltip();
+                    tooltipOpen = null ;
+                }
             }
             function highlightFeature(e)
             {
