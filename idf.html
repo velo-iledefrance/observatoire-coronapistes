@@ -343,6 +343,32 @@
                 return number.replace(".", ",");
             }
 
+            function getLengthInsidePolygon(line, polygon_boundaries, departement){
+                var line_exploded = turf.explode(line) ;
+                var points_inside = turf.pointsWithinPolygon(line_exploded, polygon_boundaries);
+                var length_inside = 0 ;
+                var segment = [] ;
+                var i_point_reference = 0 ;
+                var i_point = 0 ;
+
+                while ( i_point < points_inside.features.length ){
+                    while ( points_inside.features[i_point] == line_exploded.features[i_point_reference] && i_point < points_inside.features.length){
+                        segment.push(points_inside.features[i_point].geometry.coordinates);
+                        i_point++ ;
+                        i_point_reference++;
+                    }
+                    if ( segment.length != 0 ){
+                        length_inside += turf.lineDistance({ "type": "Feature", "geometry": { "type": "LineString", "coordinates": segment}});
+                    }
+
+                    while( points_inside.features[i_point] != line_exploded.features[i_point_reference] && i_point_reference < line_exploded.features.length ){
+                        i_point_reference++ ;
+                    }
+                }
+
+                return length_inside ;
+            }
+
             // Change the stats that are displayed depending on the departement selected. Also changes the mask
             function changeStats(){
                 var selectElement = document.getElementById("selectDepartement") ;
@@ -384,22 +410,14 @@
                 document.getElementById("statPerennisees").innerHTML = roundFormatNumber(stats[PERENNISEES], 2) + "&nbsp;km" ;
             }
             // Compute the length of the different segments in a layer and bind events (highlight) to the segments
-            function bindFeatureEvents(feature, layer)
-            {
+            function bindFeatureEvents(feature, layer){
                 var colorFeature = (layer.options.style.color != null ? layer.options.style.color : "");
                 if ( typeof feature != "undefined" && feature.geometry.type == "LineString" ){
                     var index = colors.indexOf(colorFeature);
                     if ( index >= 0 ){
                         for ( var i_departement = 0 ; i_departement < departementsBoundaries.length ; i_departement++){
-                            var points_inside = turf.pointsWithinPolygon(turf.explode(feature), departementsBoundaries[i_departement].geometry);
-                            if ( points_inside.features.length > 0){
-                                var points_coordinates = []
-                                for ( var i_point = 0 ; i_point < points_inside.features.length ; i_point++){
-                                    points_coordinates.push(points_inside.features[i_point].geometry.coordinates);
-                                }
-
-                                lengthsFeatures[index][ departements[departementsBoundaries[i_departement]. departement] ] += turf.lineDistance(feature) ;
-                            }
+                            var length_inside = getLengthInsidePolygon(feature, departementsBoundaries[i_departement].geometry, departementsBoundaries[i_departement].departement);
+                            lengthsFeatures[index][ departements[departementsBoundaries[i_departement]. departement] ] += length_inside ;
                         }
                     }
                 }
