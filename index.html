@@ -301,6 +301,7 @@
                                 <option value="93">Seine-Saint-Denis (93)</option>
                                 <option value="94">Val-de-Marne (94)</option>
                                 <option value="95">Val-d'Oise (95)</option>
+                                <option value="100">Métropole du Grand Paris</option>
                             </select>
                         </div>
                         <div class="stat">
@@ -345,12 +346,12 @@
                 "Pistes cyclables temporaires",
                 "Pistes cyclables temporaires supprimées",
                 "Pistes cyclables temporaires pérennisées"];
-            var departements = {75: 0, 77:1, 78:2, 91:3, 92:4, 93:5, 94: 6, 95: 7};
+            var departements = {75: 0, 77:1, 78:2, 91:3, 92:4, 93:5, 94: 6, 95: 7, 100:8};
             var departements_mask = {} ;
             var layer_mask ;
             var stats = new Array(colors.length);
             // First dimension : color (type of lane), second dimension : departement
-            var lengthsFeatures = [[0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0]];
+            var lengthsFeatures = [[0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0]];
             var departementsBoundaries = [];
             var world_mask =
                 {"type": "Feature","geometry": {"type": "Polygon","coordinates": [[[-180.0,90.0],[-180,-90],[180,-90],[180,90],[-180.0,90.0]]]},"properties": { }};
@@ -418,7 +419,8 @@
 
                 if ( typeof departement == "undefined" || departement == 0){
                     for ( var i_color = 0 ; i_color < colors.length ; i_color++){
-                        for ( var i_departement = 0 ; i_departement < departementsBoundaries.length ; i_departement++){
+                        // Do not take the last departement into account since it's the MGP which already contains some parts of some departements
+                        for ( var i_departement = 0 ; i_departement < departementsBoundaries.length - 1 ; i_departement++){
                             stats[i_color] += lengthsFeatures[i_color][i_departement];
                         }
                     }
