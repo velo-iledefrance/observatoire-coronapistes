@@ -288,10 +288,6 @@
                             Pistes cyclables temporaires pérennisées<br/>
                             <span class="statNumber" id="statPerennisees">&nbsp;</span>
                         </div>
-                        <div class="stat">
-                            Itinéraires cyclables existants<br/>
-                            <span class="statNumber" id="statExistant">&nbsp;</span>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -404,7 +400,6 @@
                     }
                 }
 
-                document.getElementById("statExistant").innerHTML = roundFormatNumber(stats[EXISTANT], 2) + "&nbsp;km" ;
                 document.getElementById("statProvisoire").innerHTML = roundFormatNumber(stats[PROVISOIRE], 2) + "&nbsp;km" ;
                 document.getElementById("statSupprimees").innerHTML = roundFormatNumber(stats[SUPPRIMEES], 2) + "&nbsp;km" ;
                 document.getElementById("statPerennisees").innerHTML = roundFormatNumber(stats[PERENNISEES], 2) + "&nbsp;km" ;
