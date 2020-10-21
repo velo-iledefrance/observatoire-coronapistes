@@ -309,6 +309,7 @@
         <script src="js/tingle.min.js"></script>
         <script src="js/leaflet-legend.js"></script>
         <script src="js/turf.js"></script>
+        <script src="https://unpkg.com/showdown/dist/showdown.min.js"></script>
         <script type="text/javascript">
             var map;
             var timeout = null;
@@ -411,6 +412,10 @@
             }
             // Compute the length of the different segments in a layer and bind events (highlight) to the segments
             function bindFeatureEvents(feature, layer){
+                if ( typeof feature.properties != "undefined" && feature.properties != null && typeof feature.properties.popup != "undefined" ){
+                    console.log(feature.properties.popup) ;
+                }
+
                 var colorFeature = (layer.options.style.color != null ? layer.options.style.color : "");
                 if ( typeof feature != "undefined" && feature.geometry.type == "LineString" ){
                     var index = colors.indexOf(colorFeature);
