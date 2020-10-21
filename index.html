@@ -338,7 +338,7 @@
         <script type="text/javascript">
             var converter = new showdown.Converter() ;
             var map;
-            var timeout = null;
+            var timeoutChangeStats = null;
             var weightFeatureHighlighted = 6 ;
             var weightFeature = 3 ;
             var EXISTANT = 0, PROVISOIRE = 1, SUPPRIMEES = 2, PERENNISEES = 3 ;
@@ -463,10 +463,10 @@
                     click: function (e) { console.log(e.target.feature) ; }
                 });
 
-                if ( timeout != null ){
-                    clearTimeout(timeout) ;
+                if ( timeoutChangeStats != null ){
+                    clearTimeout(timeoutChangeStats) ;
                 }
-                timeout = setTimeout(changeStats, 2000) ;
+                timeoutChangeStats = setTimeout(changeStats, 2000) ;
             }
             function highlightFeature(e)
             {
