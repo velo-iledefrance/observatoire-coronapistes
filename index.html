@@ -592,7 +592,14 @@
                             "weight": weightFeature,
                             "opacity": 1.0,
                         }
-                    }).addTo(map).on({add: function(event){existantLayer.bringToBack();toggleIcon("existant", event);}, remove: function (event) {toggleIcon("existant", event) ; } });
+                    }).addTo(map).on({
+                        add: function(event){
+                            existantLayer.bringToBack();
+                            toggleIcon("existant", event);
+                        },
+                        remove: function (event) {toggleIcon("existant", event) ; },
+                        "data:loaded": function (event) { existantLayer.bringToBack(); }
+                    });
                     // Cycles lanes that have effectively been built post pandemic
                     var provisoireLayer = new L.GeoJSON.AJAX(
                         "https://raw.githubusercontent.com/velo-iledefrance/pistes-deconfinement/gh-pages/pistes_provisoires.geojson",
@@ -603,7 +610,14 @@
                             "weight": weightFeature,
                             "opacity": 1,
                         }
-                    }).addTo(map).on({add: function(event){provisoireLayer.bringToBack();toggleIcon("provisoire", event);}, remove: function (event) {toggleIcon("provisoire", event) ; } });
+                    }).addTo(map).on({
+                        add: function(event){
+                            provisoireLayer.bringToFront();
+                            toggleIcon("provisoire", event);
+                        },
+                        remove: function (event) {toggleIcon("provisoire", event) ; },
+                        "data:loaded": function (event) { provisoireLayer.bringToFront(); }
+                    });
                     // Cycles lanes that have effectively been built then deleted post pandemic
                     var supprimeesLayer = new L.GeoJSON.AJAX(
                         "https://raw.githubusercontent.com/velo-iledefrance/pistes-deconfinement/gh-pages/pistes_supprimees.geojson",
@@ -614,7 +628,14 @@
                             "weight": weightFeature,
                             "opacity": 1,
                         }
-                    }).addTo(map).on({add: function(event){supprimeesLayer.bringToFront();toggleIcon("supprimees", event);}, remove: function (event) {toggleIcon("supprimees", event) ; } });
+                    }).addTo(map).on({
+                        add: function(event){
+                            supprimeesLayer.bringToFront();
+                            toggleIcon("supprimees", event);
+                        },
+                        remove: function (event) {toggleIcon("supprimees", event) ; },
+                        "data:loaded": function (event) { supprimeesLayer.bringToFront(); }
+                    });
                     // Cycles lanes that haven't been built post pandemic while planned
                     var perenniseesLayer = new L.GeoJSON.AJAX(
                         "https://raw.githubusercontent.com/velo-iledefrance/pistes-deconfinement/gh-pages/pistes_perennisees.geojson",
@@ -625,7 +646,14 @@
                             "weight": weightFeature,
                             "opacity": 1,
                         }
-                    }).addTo(map).on({add: function(event){perenniseesLayer.bringToFront();toggleIcon("perennisees", event);}, remove: function (event) {toggleIcon("perennisees", event) ; } });
+                    }).addTo(map).on({
+                        add: function(event){
+                            perenniseesLayer.bringToFront();
+                            toggleIcon("perennisees", event);
+                        },
+                        remove: function (event) {toggleIcon("perennisees", event) ; },
+                        "data:loaded": function (event) { perenniseesLayer.bringToFront(); }
+                    });
 
                     // Set up layers control
                     var overlayMaps = {
