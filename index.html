@@ -449,6 +449,7 @@
             function bindFeatureEvents(feature, layer){
                 if ( typeof feature.properties != "undefined" && feature.properties != null && typeof feature.properties.popup != "undefined" ){
                     var popupContent = converter.makeHtml(feature.properties.popup);
+                    popupContent = popupContent.replace('<a ', '<a target="_blank" ');
                     var tooltip = layer.bindTooltip(popupContent, {"direction":"top", "className": "tooltip"});
                     tooltip.removeEventListener("mouseout");
                     tooltip.addEventListener("mouseout", launchTimeoutHideTooltip);
