@@ -301,7 +301,7 @@
                     <div id="panelContent">
                         <div id="panelSelect">
                             <select id="selectDepartement">
-                                <option value="0" selected>Île de France</option>
+                                <option value="101" selected>Île de France</option>
                                 <option value="75">Paris (75)</option>
                                 <option value="77">Seine-et-Marne (77)</option>
                                 <option value="78">Yvelines (78)</option>
@@ -356,12 +356,14 @@
                 "Pistes cyclables temporaires",
                 "Pistes cyclables temporaires supprimées",
                 "Pistes cyclables temporaires pérennisées"];
-            var departements = {75: 0, 77:1, 78:2, 91:3, 92:4, 93:5, 94: 6, 95: 7, 100:8};
+            // Correspondance between departement number and position in the lengthFeatures array
+            // 100 is for MGP and 101 is for Île de France
+            var departements = {75: 0, 77:1, 78:2, 91:3, 92:4, 93:5, 94: 6, 95: 7, 100: 8, 101: 9};
             var departements_mask = {} ;
             var layer_mask ;
             var stats = new Array(colors.length);
             // First dimension : color (type of lane), second dimension : departement
-            var lengthsFeatures = [[0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0]];
+            var lengthsFeatures = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]];
             var departementsBoundaries = [];
             var world_mask =
                 {"type": "Feature","geometry": {"type": "Polygon","coordinates": [[[-180.0,90.0],[-180,-90],[180,-90],[180,90],[-180.0,90.0]]]},"properties": { }};
@@ -427,18 +429,9 @@
                     stats[i_color] = 0;
                 }
 
-                if ( typeof departement == "undefined" || departement == 0){
-                    for ( var i_color = 0 ; i_color < colors.length ; i_color++){
-                        // Do not take the last departement into account since it's the MGP which already contains some parts of some departements
-                        for ( var i_departement = 0 ; i_departement < departementsBoundaries.length - 1 ; i_departement++){
-                            stats[i_color] += lengthsFeatures[i_color][i_departement];
-                        }
-                    }
-                } else {
-                    var i_departement = departements[departement];
-                    for ( var i_color = 0 ; i_color < colors.length ; i_color++){
-                        stats[i_color] += lengthsFeatures[i_color][i_departement];
-                    }
+                var i_departement = departements[departement];
+                for ( var i_color = 0 ; i_color < colors.length ; i_color++){
+                    stats[i_color] += lengthsFeatures[i_color][i_departement];
                 }
 
                 document.getElementById("statProvisoire").innerHTML = roundFormatNumber(stats[PROVISOIRE], 2) + "&nbsp;km" ;
