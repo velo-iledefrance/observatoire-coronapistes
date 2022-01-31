@@ -325,6 +325,10 @@
                             Pistes cyclables temporaires pérennisées<br/>
                             <span class="statNumber" id="statPerennisees">&nbsp;</span>
                         </div>
+                        <div class="stat">
+                            Pistes cyclables transformées en voies ou couloirs bus<br/>
+                            <span class="statNumber" id="statVoiesBus">&nbsp;</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -349,21 +353,22 @@
             var timeoutChangeStats = null, timeoutHideTooltip = null;
             var weightFeatureHighlighted = 6 ;
             var weightFeature = 3 ;
-            var EXISTANT = 0, PROVISOIRE = 1, SUPPRIMEES = 2, PERENNISEES = 3 ;
-            var colors = ["#8f8f8f", "#2fd231", "#f20a17", "#006319"] ;
+            var EXISTANT = 0, PROVISOIRE = 1, SUPPRIMEES = 2, PERENNISEES = 3, VOIES_BUS = 4;
+            var colors = ["#8f8f8f", "#2fd231", "#f20a17", "#006319", "#003d0f"] ;
             var titles = [
                 "Itinéraires cyclables existants",
                 "Pistes cyclables temporaires",
                 "Pistes cyclables temporaires supprimées",
-                "Pistes cyclables temporaires pérennisées"];
-            // Correspondance between departement number and position in the lengthFeatures array
+                "Pistes cyclables temporaires pérennisées",
+                "Pistes cyclables transformées en voies ou couloirs bus ouverts aux vélos"];
+            // Correspondance between departement number and position in the lengthsFeatures array
             // 100 is for MGP and 101 is for Île de France
-            var departements = {75: 0, 77:1, 78:2, 91:3, 92:4, 93:5, 94: 6, 95: 7, 100: 8, 101: 9};
+            var departements = {75: 0, 77: 1, 78: 2, 91: 3, 92: 4, 93: 5, 94: 6, 95: 7, 100: 8, 101: 9};
             var departements_mask = {} ;
             var layer_mask ;
             var stats = new Array(colors.length);
             // First dimension : color (type of lane), second dimension : departement
-            var lengthsFeatures = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]];
+            var lengthsFeatures = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]];
             var departementsBoundaries = [];
             var world_mask =
                 {"type": "Feature","geometry": {"type": "Polygon","coordinates": [[[-180.0,90.0],[-180,-90],[180,-90],[180,90],[-180.0,90.0]]]},"properties": { }};
@@ -425,18 +430,19 @@
             }
             // Compute the different stats for the department selected
             function computeStats(departement){
-                for ( var i_color = 0 ; i_color < colors.length ; i_color++){
+                for ( var i_color = 0 ; i_color < colors.length ; i_color++) {
                     stats[i_color] = 0;
                 }
 
                 var i_departement = departements[departement];
-                for ( var i_color = 0 ; i_color < colors.length ; i_color++){
+                for ( var i_color = 0 ; i_color < colors.length ; i_color++) {
                     stats[i_color] += lengthsFeatures[i_color][i_departement];
                 }
 
                 document.getElementById("statProvisoire").innerHTML = roundFormatNumber(stats[PROVISOIRE], 2) + "&nbsp;km" ;
                 document.getElementById("statSupprimees").innerHTML = roundFormatNumber(stats[SUPPRIMEES], 2) + "&nbsp;km" ;
                 document.getElementById("statPerennisees").innerHTML = roundFormatNumber(stats[PERENNISEES], 2) + "&nbsp;km" ;
+                document.getElementById("statVoiesBus").innerHTML = roundFormatNumber(stats[VOIES_BUS], 2) + "&nbsp;km" ;
             }
             // Compute the length of the different segments in a layer and bind events (highlight) to the segments
             function bindFeatureEvents(feature, layer){
@@ -636,7 +642,7 @@
                         remove: function (event) {toggleIcon("supprimees", event) ; },
                         "data:loaded": function (event) { supprimeesLayer.bringToFront(); }
                     });
-                    // Cycles lanes that haven't been built post pandemic while planned
+                    // Cycles lanes built post pandemic that are now permanent
                     var perenniseesLayer = new L.GeoJSON.AJAX(
                         "https://raw.githubusercontent.com/velo-iledefrance/pistes-deconfinement/gh-pages/pistes_perennisees.geojson",
                     {
@@ -654,13 +660,33 @@
                         remove: function (event) {toggleIcon("perennisees", event) ; },
                         "data:loaded": function (event) { perenniseesLayer.bringToFront(); }
                     });
+                    // Cycles lanes built post pandemic transformed into bus-bike miked lanes
+                    var voiesBusLayer = new L.GeoJSON.AJAX(
+                        "https://raw.githubusercontent.com/velo-iledefrance/pistes-deconfinement/gh-pages/pistes_transformees_voies_bus.geojson",
+                    {
+                        onEachFeature: bindFeatureEvents,
+                        style: {
+                            "color": colors[VOIES_BUS],
+                            "weight": weightFeature,
+                            "opacity": 1,
+                            "dashArray": ".5,6",
+                        }
+                    }).addTo(map).on({
+                        add: function(event){
+                            voiesBusLayer.bringToFront();
+                            toggleIcon("voies_bus", event);
+                        },
+                        remove: function (event) {toggleIcon("voies_bus", event) ; },
+                        "data:loaded": function (event) { voiesBusLayer.bringToFront(); }
+                    });
 
                     // Set up layers control
                     var overlayMaps = {
                         '<svg width="20" height="20" class="checkbox_image" id="checkbox_existant"></text><rect width="20" height="20" style="fill:#8f8f8f;stroke-width:0;" /><text x="5" y="15" fill="#f5f5f5">✔</text></svg> Itinéraires cyclables existants': existantLayer,
                         '<svg width="20" height="20" class="checkbox_image" id="checkbox_provisoire"></text><rect width="20" height="20" style="fill:#2fd231;stroke-width:0;" /><text x="5" y="15" fill="#f5f5f5">✔</text></svg> Pistes cyclables temporaires': provisoireLayer,
                         '<svg width="20" height="20" class="checkbox_image" id="checkbox_supprimees"></text><rect width="20" height="20" style="fill:#f20a17;stroke-width:0;" /><text x="5" y="15" fill="#f5f5f5">✔</text></svg> Pistes cyclables temporaires supprimées': supprimeesLayer,
-                        '<svg width="20" height="20" class="checkbox_image" id="checkbox_perennisees"></text><rect width="20" height="20" style="fill:#006319;stroke-width:0;" /><text x="5" y="15" fill="#f5f5f5">✔</text></svg> Pistes cyclables temporaires pérennisées': perenniseesLayer
+                        '<svg width="20" height="20" class="checkbox_image" id="checkbox_perennisees"></text><rect width="20" height="20" style="fill:#006319;stroke-width:0;" /><text x="5" y="15" fill="#f5f5f5">✔</text></svg> Pistes cyclables temporaires pérennisées': perenniseesLayer,
+                        '<svg width="20" height="20" class="checkbox_image" id="checkbox_voies_bus"></text><rect width="20" height="20" style="fill:#003d0f;stroke-width:0;" /><text x="5" y="15" fill="#f5f5f5">✔</text></svg> Pistes cyclables temporaires transformées en voies ou couloirs bus': voiesBusLayer
                     };
                     L.control.layers(null, overlayMaps, { collapsed: false }).addTo(map);
 
